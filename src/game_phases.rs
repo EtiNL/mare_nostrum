@@ -1,8 +1,10 @@
-
-enum Game_phases {
-    production,
-    commerce,
-    achats,
-    militaire,
-    revendication
+pub mod game_phases {
+    #[derive(Debug, Clone)]
+    pub enum GamePhases {
+        Production,
+        Commerce,
+        Achats,
+        Militaire,
+        Revendication
+    }
 }

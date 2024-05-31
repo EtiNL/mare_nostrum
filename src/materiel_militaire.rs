@@ -1,11 +1,13 @@
-enum Actions_legions {
-    Converti,
-    Pille,
-    Occupe,
-    Deffend
-}
+pub mod materiel_militaire{
+    pub enum ActionsLegions {
+        Converti,
+        Pille,
+        Occupe,
+        Deffend
+    }
 
-enum Materiel_militaire {
-    Legion(Actions_legions),
-    Trireme,
+    pub enum MaterielMilitaire {
+        Legion(ActionsLegions),
+        Trireme,
+    }
 }

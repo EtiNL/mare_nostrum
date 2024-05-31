@@ -1,6 +1,9 @@
-use ressources::RessourceType;
-struct Player {
-    heroes_and_wonder: Vect<Heroes_and_Wonders_enum>,
-    ressources: Vect<(RessourceType,u8)>,
-    territoires: Vect<&Territoire>,
+use crate::ressources::ressources_mod::RessourceType;
+use crate::heroes_and_wonders::HeroesAndWondersMod::HeroesAndWondersEnum;
+use crate::plateau::plateau::Territoire;
+
+pub struct Player {
+    heroes_and_wonders: Vec<HeroesAndWondersEnum>,
+    ressources: Vec<(RessourceType, u8)>,
+    territoires: Vec<&'static Territoire>,
 }

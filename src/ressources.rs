@@ -1,5 +1,5 @@
 pub mod ressources_mod  {
-    enum RessourceType {
+    pub enum RessourceType {
         Ceramique,
         Diamant,
         Papyrus,
@@ -14,10 +14,10 @@ pub mod ressources_mod  {
         Vin,
         Gladiateur,
         Impot,
-        Legendaire(RessourceLegendaires),
+        Legendaire(RessourceLegendaire),
     }
 
-    enum RessourceLegendaire {
+    pub enum RessourceLegendaire {
         Ceramique,
         Diamant,
         Papyrus,

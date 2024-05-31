@@ -1,12 +1,16 @@
-use ressources::RessourceType;
-pub mod Batiments {
+use crate::ressources::ressources_mod::RessourceType;
+
+pub mod batiments {
+    use super::RessourceType;
+
     pub enum BatimentsTypes {
         Caravane(RessourceType),
-        Marche(Vect<&Caravane>),
+        Marche(Vec<BatimentsTypes>),
         Cite(RessourceType),
         Capitale(RessourceType),
         CiteLegendaire(RessourceType),
-        Temple(Batiments),
+        Temple(Vec<BatimentsTypes>),
         Forteresse,
     }
+
 }

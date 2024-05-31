@@ -1,36 +1,39 @@
-
-use batiments::BatimentsTypes;
-use materiel_militaire::MaterielMilitaire;
-use player::Player;
+use crate::batiments::batiments::BatimentsTypes;
+use crate::materiel_militaire::materiel_militaire::MaterielMilitaire;
+use crate::player::Player;
 
 pub mod plateau {
-    enum Terrain {
+    use super::{BatimentsTypes, MaterielMilitaire, Player};
+
+    #[derive(Debug, Clone)]
+    pub enum Terrain {
         Terre,
         Mer,
     }
 
-    struct Territoire {
-        name: String,
-        type_terrain: Terrain,
-        proprietaire: Option<&Player>,
-        constructions: Vect<(BatimentsTypes,bool)>,
-        neighbours: Vect<Territoire>,
-        militaire: Vect<(&Player, MaterielMilitaire)>,
+    pub struct Territoire {
+        pub name: String,
+        pub type_terrain: Terrain,
+        pub proprietaire: Option<&'static Player>,
+        pub constructions: Vec<(BatimentsTypes, bool)>,
+        pub neighbours: Vec<Territoire>,
+        pub militaire: Vec<(&'static Player, MaterielMilitaire)>,
     }
 
     impl Territoire {
-        pub fn new(name: &str, terrain: Terrain, player: Option<&Player>) -> Territoire {
+        pub fn new(name: &str, terrain: Terrain, player: Option<&'static Player>) -> Territoire {
             Territoire {
                 name: name.to_string(),
                 type_terrain: terrain,
                 proprietaire: player,
-                constructions: Vect::new(),
-                neighbours: Vect::new(),
-                militaire: Vect::new(),
+                constructions: Vec::new(),
+                neighbours: Vec::new(),
+                militaire: Vec::new(),
             }
         }
     }
 
+    #[derive(Debug, Clone)]
     pub enum TerritoireEnum {
         Gallia,
         Germania,
@@ -64,7 +67,7 @@ pub mod plateau {
         MareCyprium,
         Cappadocia,
         PontusEuxinus,
-        Asia
+        Asia,
     }
 
     impl TerritoireEnum {
@@ -102,188 +105,56 @@ pub mod plateau {
                 TerritoireEnum::MareCyprium,
                 TerritoireEnum::Cappadocia,
                 TerritoireEnum::PontusEuxinus,
-                TerritoireEnum::Asia
+                TerritoireEnum::Asia,
             ]
             .iter()
             .cloned()
         }
 
-        pub fn map_construction() -> Vect<Territoire>{
-            let map = Vect::new();
-            for territoire in TerritoireEnum::iterator() {
-                map.push(territoire.create());
-            }
-            map
-        }
-        
         pub fn create(&self) -> Territoire {
             match self {
-                TerritoireEnum::Gallia => Territoire::new(
-                    "Gallia",
-                    Terrain::Terre,
-                    None,
-                ),
-                TerritoireEnum::Germania => Territoire::new(
-                    "Germania",
-                    Terrain::Terre,
-                    None,
-                ),
-                TerritoireEnum::Dalmatia => Territoire::new(
-                    "Dalmatia",
-                    Terrain::Terre,
-                    None,
-                ),
-                TerritoireEnum::Latium => Territoire::new(
-                    "Latium",
-                    Terrain::Terre,
-                    None,
-                ),
-                TerritoireEnum::Italia => Territoire::new(
-                    "Italia",
-                    Terrain::Terre,
-                    None,
-                ),
-                TerritoireEnum::MareHadriaticum => Territoire::new(
-                    "Mare Hadriaticum",
-                    Terrain::Mer,
-                    None,
-                ),
-                TerritoireEnum::Macedonia => Territoire::new(
-                    "Macedonia",
-                    Terrain::Terre,
-                    None,
-                ),
-                TerritoireEnum::Dacia => Territoire::new(
-                    "Dacia",
-                    Terrain::Terre,
-                    None,
-                ),
-                TerritoireEnum::Thracia => Territoire::new(
-                    "Thracia",
-                    Terrain::Terre,
-                    None,
-                ),
-                TerritoireEnum::Achea => Territoire::new(
-                    "Achea",
-                    Terrain::Terre,
-                    None,
-                ),
-                TerritoireEnum::MareIonium => Territoire::new(
-                    "Mare Ionium",
-                    Terrain::Mer,
-                    None,
-                ),
-                TerritoireEnum::MareAegaeum => Territoire::new(
-                    "Mare Aegaeum",
-                    Terrain::Mer,
-                    None,
-                ),
-                TerritoireEnum::MareTyrrhenum => Territoire::new(
-                    "Mare Tyrrhenum",
-                    Terrain::Mer,
-                    None,
-                ),
-                TerritoireEnum::MareSardum => Territoire::new(
-                    "Mare Sardum",
-                    Terrain::Mer,
-                    None,
-                ),
-                TerritoireEnum::MareAfricum => Territoire::new(
-                    "Mare Africum",
-                    Terrain::Mer,
-                    None,
-                ),
-                TerritoireEnum::Sicilia => Territoire::new(
-                    "Sicilia",
-                    Terrain::Terre,
-                    None,
-                ),
-                TerritoireEnum::Numidia => Territoire::new(
-                    "Numidia",
-                    Terrain::Terre,
-                    None,
-                ),
-                TerritoireEnum::Africa => Territoire::new(
-                    "Africa",
-                    Terrain::Terre,
-                    None,
-                ),
-                TerritoireEnum::Phasania => Territoire::new(
-                    "Phasania",
-                    Terrain::Terre,
-                    None,
-                ),
-                TerritoireEnum::Libya => Territoire::new(
-                    "Libya",
-                    Terrain::Terre,
-                    None,
-                ),
-                TerritoireEnum::Garamantia => Territoire::new(
-                    "Garamantia",
-                    Terrain::Terre,
-                    None,
-                ),
-                TerritoireEnum::Cyrenaica => Territoire::new(
-                    "Cyrenaica",
-                    Terrain::Terre,
-                    None,
-                ),
-                TerritoireEnum::Nubia => Territoire::new(
-                    "Nubia",
-                    Terrain::Terre,
-                    None,
-                ),
-                TerritoireEnum::Aegyptus => Territoire::new(
-                    "Aegyptus",
-                    Terrain::Terre,
-                    None,
-                ),
-                TerritoireEnum::Aetiopia => Territoire::new(
-                    "Aetiopia",
-                    Terrain::Terre,
-                    None,
-                ),
-                TerritoireEnum::MareAegyptum => Territoire::new(
-                    "Mare Aegyptum",
-                    Terrain::Mer,
-                    None,
-                ),
-                TerritoireEnum::Creta => Territoire::new(
-                    "Creta",
-                    Terrain::Terre,
-                    None,
-                ),
-                TerritoireEnum::Judea => Territoire::new(
-                    "Judea",
-                    Terrain::Terre,
-                    None,
-                ),
-                TerritoireEnum::Cilicia => Territoire::new(
-                    "Cilicia",
-                    Terrain::Terre,
-                    None,
-                ),
-                TerritoireEnum::MareCyprium => Territoire::new(
-                    "Mare Cyprium",
-                    Terrain::Mer,
-                    None,
-                ),
-                TerritoireEnum::Cappadocia => Territoire::new(
-                    "Cappadocia",
-                    Terrain::Terre,
-                    None,
-                ),
-                TerritoireEnum::PontusEuxinus => Territoire::new(
-                    "Pontus Euxinus",
-                    Terrain::Mer,
-                    None,
-                ),
-                TerritoireEnum::Asia => Territoire::new(
-                    "Asia",
-                    Terrain::Terre,
-                    None,
-                ),
+                TerritoireEnum::Gallia => Territoire::new("Gallia", Terrain::Terre, None),
+                TerritoireEnum::Germania => Territoire::new("Germania", Terrain::Terre, None),
+                TerritoireEnum::Dalmatia => Territoire::new("Dalmatia", Terrain::Terre, None),
+                TerritoireEnum::Latium => Territoire::new("Latium", Terrain::Terre, None),
+                TerritoireEnum::Italia => Territoire::new("Italia", Terrain::Terre, None),
+                TerritoireEnum::MareHadriaticum => Territoire::new("Mare Hadriaticum", Terrain::Mer, None),
+                TerritoireEnum::Macedonia => Territoire::new("Macedonia", Terrain::Terre, None),
+                TerritoireEnum::Dacia => Territoire::new("Dacia", Terrain::Terre, None),
+                TerritoireEnum::Thracia => Territoire::new("Thracia", Terrain::Terre, None),
+                TerritoireEnum::Achea => Territoire::new("Achea", Terrain::Terre, None),
+                TerritoireEnum::MareIonium => Territoire::new("Mare Ionium", Terrain::Mer, None),
+                TerritoireEnum::MareAegaeum => Territoire::new("Mare Aegaeum", Terrain::Mer, None),
+                TerritoireEnum::MareTyrrhenum => Territoire::new("Mare Tyrrhenum", Terrain::Mer, None),
+                TerritoireEnum::MareSardum => Territoire::new("Mare Sardum", Terrain::Mer, None),
+                TerritoireEnum::MareAfricum => Territoire::new("Mare Africum", Terrain::Mer, None),
+                TerritoireEnum::Sicilia => Territoire::new("Sicilia", Terrain::Terre, None),
+                TerritoireEnum::Numidia => Territoire::new("Numidia", Terrain::Terre, None),
+                TerritoireEnum::Africa => Territoire::new("Africa", Terrain::Terre, None),
+                TerritoireEnum::Phasania => Territoire::new("Phasania", Terrain::Terre, None),
+                TerritoireEnum::Libya => Territoire::new("Libya", Terrain::Terre, None),
+                TerritoireEnum::Garamantia => Territoire::new("Garamantia", Terrain::Terre, None),
+                TerritoireEnum::Cyrenaica => Territoire::new("Cyrenaica", Terrain::Terre, None),
+                TerritoireEnum::Nubia => Territoire::new("Nubia", Terrain::Terre, None),
+                TerritoireEnum::Aegyptus => Territoire::new("Aegyptus", Terrain::Terre, None),
+                TerritoireEnum::Aetiopia => Territoire::new("Aetiopia", Terrain::Terre, None),
+                TerritoireEnum::MareAegyptum => Territoire::new("Mare Aegyptum", Terrain::Mer, None),
+                TerritoireEnum::Creta => Territoire::new("Creta", Terrain::Terre, None),
+                TerritoireEnum::Judea => Territoire::new("Judea", Terrain::Terre, None),
+                TerritoireEnum::Cilicia => Territoire::new("Cilicia", Terrain::Terre, None),
+                TerritoireEnum::MareCyprium => Territoire::new("Mare Cyprium", Terrain::Mer, None),
+                TerritoireEnum::Cappadocia => Territoire::new("Cappadocia", Terrain::Terre, None),
+                TerritoireEnum::PontusEuxinus => Territoire::new("Pontus Euxinus", Terrain::Mer, None),
+                TerritoireEnum::Asia => Territoire::new("Asia", Terrain::Terre, None),
             }
         }
+    }
+
+    pub fn map_construction() -> Vec<Territoire> {
+        let mut map = Vec::new();
+        for territoire in TerritoireEnum::iterator() {
+            map.push(territoire.create());
+        }
+        map
     }
 }
