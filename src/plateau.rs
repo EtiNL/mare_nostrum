@@ -1,9 +1,10 @@
 use crate::batiments::batiments::BatimentsTypes;
 use crate::materiel_militaire::materiel_militaire::MaterielMilitaire;
 use crate::player::Player;
+use std::collections::HashMap;
 
 pub mod plateau {
-    use super::{BatimentsTypes, MaterielMilitaire, Player};
+    use super::{BatimentsTypes, MaterielMilitaire, Player, HashMap};
 
     #[derive(Debug, Clone)]
     pub enum Terrain {
@@ -11,12 +12,13 @@ pub mod plateau {
         Mer,
     }
 
+    #[derive(Debug, Clone)]
     pub struct Territoire {
         pub name: String,
         pub type_terrain: Terrain,
         pub proprietaire: Option<&'static Player>,
         pub constructions: Vec<(BatimentsTypes, bool)>,
-        pub neighbours: Vec<Territoire>,
+        pub neighbours: Vec<TerritoireEnum>,
         pub militaire: Vec<(&'static Player, MaterielMilitaire)>,
     }
 
@@ -111,6 +113,45 @@ pub mod plateau {
             .cloned()
         }
 
+        pub fn to_string(&self) -> String {
+            match self {
+                TerritoireEnum::Gallia => "Gallia",
+                TerritoireEnum::Germania => "Germania",
+                TerritoireEnum::Dalmatia => "Dalmatia",
+                TerritoireEnum::Latium => "Latium",
+                TerritoireEnum::Italia => "Italia",
+                TerritoireEnum::MareHadriaticum => "Mare Hadriaticum",
+                TerritoireEnum::Macedonia => "Macedonia",
+                TerritoireEnum::Dacia => "Dacia",
+                TerritoireEnum::Thracia => "Thracia",
+                TerritoireEnum::Achea => "Achea",
+                TerritoireEnum::MareIonium => "Mare Ionium",
+                TerritoireEnum::MareAegaeum => "Mare Aegaeum",
+                TerritoireEnum::MareTyrrhenum => "Mare Tyrrhenum",
+                TerritoireEnum::MareSardum => "Mare Sardum",
+                TerritoireEnum::MareAfricum => "Mare Africum",
+                TerritoireEnum::Sicilia => "Sicilia",
+                TerritoireEnum::Numidia => "Numidia",
+                TerritoireEnum::Africa => "Africa",
+                TerritoireEnum::Phasania => "Phasania",
+                TerritoireEnum::Libya => "Libya",
+                TerritoireEnum::Garamantia => "Garamantia",
+                TerritoireEnum::Cyrenaica => "Cyrenaica",
+                TerritoireEnum::Nubia => "Nubia",
+                TerritoireEnum::Aegyptus => "Aegyptus",
+                TerritoireEnum::Aetiopia => "Aetiopia",
+                TerritoireEnum::MareAegyptum => "Mare Aegyptum",
+                TerritoireEnum::Creta => "Creta",
+                TerritoireEnum::Judea => "Judea",
+                TerritoireEnum::Cilicia => "Cilicia",
+                TerritoireEnum::MareCyprium => "Mare Cyprium",
+                TerritoireEnum::Cappadocia => "Cappadocia",
+                TerritoireEnum::PontusEuxinus => "Pontus Euxinus",
+                TerritoireEnum::Asia => "Asia",
+            }
+            .to_string()
+        }
+
         pub fn create(&self) -> Territoire {
             match self {
                 TerritoireEnum::Gallia => Territoire::new("Gallia", Terrain::Terre, None),
@@ -155,6 +196,38 @@ pub mod plateau {
         for territoire in TerritoireEnum::iterator() {
             map.push(territoire.create());
         }
+        for territoire_ref in &mut map {
+            if *territoire_ref.name == "Galia".to_string() {
+                
+            }
+        }
         map
+    }
+
+    // Constructs a map from `TerritoireEnum` variants to `Territoire` instances
+    pub fn create_hashmap() -> HashMap<String, Territoire> {
+        let mut map = HashMap::new();
+        for territoire in TerritoireEnum::iterator() {
+            let territoire_instance = territoire.create();
+            map.insert(territoire.to_string(), territoire_instance);
+        }
+        map
+    }
+
+    // Function to get a reference to the corresponding `Territoire` from the map
+    pub fn get_territoire<'a>(map: &'a HashMap<String, Territoire>, territoire_enum: &TerritoireEnum) -> Option<&'a Territoire> {
+        map.get(&territoire_enum.to_string())
+    }
+
+    // Example usage
+    pub fn test_get_territoire() {
+        let hashmap = create_hashmap();
+        let territoire_enum = TerritoireEnum::Gallia;
+        
+        if let Some(territoire) = get_territoire(&hashmap, &territoire_enum) {
+            println!("{:?}", territoire);
+        } else {
+            println!("Territoire not found");
+        }
     }
 }

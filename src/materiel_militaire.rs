@@ -1,4 +1,5 @@
 pub mod materiel_militaire{
+    #[derive(Debug, Clone)]
     pub enum ActionsLegions {
         Converti,
         Pille,
@@ -6,6 +7,7 @@ pub mod materiel_militaire{
         Deffend
     }
 
+    #[derive(Debug, Clone)]
     pub enum MaterielMilitaire {
         Legion(ActionsLegions),
         Trireme,

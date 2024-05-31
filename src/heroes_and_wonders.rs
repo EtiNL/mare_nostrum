@@ -50,6 +50,7 @@ pub mod HeroesAndWondersMod {
         }
     }
 
+    #[derive(Debug, Clone)]
     pub enum HeroesAndWondersEnum {
         Cesar,
         Cleopatre,
