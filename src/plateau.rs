@@ -2,9 +2,10 @@ use crate::batiments::batiments::BatimentsTypes;
 use crate::materiel_militaire::materiel_militaire::MaterielMilitaire;
 use crate::player::Player;
 use std::collections::HashMap;
+use std::sync::Arc;
 
 pub mod plateau {
-    use super::{BatimentsTypes, MaterielMilitaire, Player, HashMap};
+    use super::{BatimentsTypes, MaterielMilitaire, Player, HashMap, Arc};
 
     #[derive(Debug, Clone)]
     pub enum Terrain {
@@ -35,7 +36,7 @@ pub mod plateau {
         }
     }
 
-    #[derive(Debug, Clone)]
+    #[derive(Debug, Clone, Hash, Eq, PartialEq)]
     pub enum TerritoireEnum {
         Gallia,
         Germania,
@@ -191,37 +192,27 @@ pub mod plateau {
         }
     }
 
-    pub fn map_construction() -> Vec<Territoire> {
+    pub fn map_construction() ->  (HashMap<String, Arc<Territoire>>,Vec<Arc<Territoire>>) {
         let mut map = Vec::new();
+        let mut hashmap = HashMap::new();
+        
         for territoire in TerritoireEnum::iterator() {
-            map.push(territoire.create());
+            let created_territoire = Arc::new(territoire.create());
+            map.push(Arc::clone(&created_territoire));
+            hashmap.insert(territoire.to_string(), created_territoire);
         }
-        for territoire_ref in &mut map {
-            if *territoire_ref.name == "Galia".to_string() {
-                
-            }
-        }
-        map
-    }
 
-    // Constructs a map from `TerritoireEnum` variants to `Territoire` instances
-    pub fn create_hashmap() -> HashMap<String, Territoire> {
-        let mut map = HashMap::new();
-        for territoire in TerritoireEnum::iterator() {
-            let territoire_instance = territoire.create();
-            map.insert(territoire.to_string(), territoire_instance);
-        }
-        map
+        (hashmap, map)
     }
 
     // Function to get a reference to the corresponding `Territoire` from the map
-    pub fn get_territoire<'a>(map: &'a HashMap<String, Territoire>, territoire_enum: &TerritoireEnum) -> Option<&'a Territoire> {
-        map.get(&territoire_enum.to_string())
+    pub fn get_territoire(hashmap: &HashMap<String, Arc<Territoire>>, territoire_enum: &TerritoireEnum) -> Option<Arc<Territoire>> {
+        hashmap.get(&territoire_enum.to_string()).cloned()
     }
 
     // Example usage
     pub fn test_get_territoire() {
-        let hashmap = create_hashmap();
+        let (hashmap, _map) = map_construction();
         let territoire_enum = TerritoireEnum::Gallia;
         
         if let Some(territoire) = get_territoire(&hashmap, &territoire_enum) {
