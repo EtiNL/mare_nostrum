@@ -7,4 +7,14 @@ pub mod game_phases {
         Militaire,
         Revendication
     }
+
+    pub fn phase_transition(phase: GamePhases) -> GamePhases {
+        match phase {
+            GamePhases::Production => GamePhases::Commerce,
+            GamePhases::Commerce => GamePhases::Achats,
+            GamePhases::Achats => GamePhases::Militaire,
+            GamePhases::Militaire => GamePhases::Revendication,
+            GamePhases::Revendication => GamePhases::Production,
+        }
+    }
 }

@@ -1,9 +1,9 @@
 
-use crate::score_board::score_board::Monopole;
+use crate::monopole_counter::monopole_counter::Monopole;
 use crate::game_phases::game_phases::GamePhases;
 use crate::plateau::plateau::Terrain;
 
-pub mod HeroesAndWondersMod {
+pub mod heroes_and_wonders_mod {
     use super::{Monopole, GamePhases, Terrain};
     
     #[derive(Debug, Clone)]

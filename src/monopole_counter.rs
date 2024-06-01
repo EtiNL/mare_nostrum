@@ -1,5 +1,5 @@
-pub mod score_board{
-    
+pub mod monopole_counter {
+
     #[derive(Debug, Clone)]
     pub enum Monopole {
         Militaire,

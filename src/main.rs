@@ -5,7 +5,7 @@ mod player;
 mod materiel_militaire;
 mod heroes_and_wonders;
 mod game_phases;
-mod score_board;
+mod monopole_counter;
 
 use crate::plateau::plateau::{map_construction, test_get_territoire};
 fn main() {
