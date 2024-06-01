@@ -24,14 +24,17 @@ pub mod plateau {
     }
 
     impl Territoire {
-        pub fn new(name: &str, terrain: Terrain, player: Option<&'static Player>) -> Territoire {
+        pub fn new(name: &str, terrain: Terrain, player: Option<&'static Player>, 
+                    _constructions: Vec<(BatimentsTypes, bool)>,
+                    _neighbours: Vec<TerritoireEnum>, 
+                    _militaire: Vec<(&'static Player, MaterielMilitaire)>) -> Territoire {
             Territoire {
                 name: name.to_string(),
                 type_terrain: terrain,
                 proprietaire: player,
-                constructions: Vec::new(),
-                neighbours: Vec::new(),
-                militaire: Vec::new(),
+                constructions: _constructions,
+                neighbours: _neighbours,
+                militaire: _militaire,
             }
         }
     }
