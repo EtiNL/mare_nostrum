@@ -21,6 +21,7 @@ pub mod game_state {
                 players: _players,
                 map: _map,
                 hashmap: _hashmap,
+                monopole
             }
         }
 

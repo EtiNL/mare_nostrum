@@ -6,11 +6,11 @@ pub mod batiments {
     #[derive(Debug, Clone)]
     pub enum BatimentsTypes {
         Caravane(RessourceType),
-        Marche(Vec<BatimentsTypes>),
+        Marche,
         Cite(RessourceType),
         Capitale(RessourceType),
         CiteLegendaire(RessourceType),
-        Temple(Vec<BatimentsTypes>),
+        Temple,
         Forteresse,
     }
 

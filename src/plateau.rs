@@ -1,11 +1,12 @@
 use crate::batiments::batiments::BatimentsTypes;
+use crate::ressources::ressources_mod::RessourceType;
 use crate::materiel_militaire::materiel_militaire::MaterielMilitaire;
 use crate::player::Player;
 use std::collections::HashMap;
 use std::sync::Arc;
 
 pub mod plateau {
-    use super::{BatimentsTypes, MaterielMilitaire, Player, HashMap, Arc};
+    use super::{BatimentsTypes, MaterielMilitaire, Player, HashMap, Arc, RessourceType};
 
     #[derive(Debug, Clone)]
     pub enum Terrain {
@@ -158,10 +159,33 @@ pub mod plateau {
 
         pub fn create(&self) -> Territoire {
             match self {
-                TerritoireEnum::Gallia => Territoire::new("Gallia", Terrain::Terre, None),
-                TerritoireEnum::Germania => Territoire::new("Germania", Terrain::Terre, None),
-                TerritoireEnum::Dalmatia => Territoire::new("Dalmatia", Terrain::Terre, None),
-                TerritoireEnum::Latium => Territoire::new("Latium", Terrain::Terre, None),
+                TerritoireEnum::Gallia => {Territoire::new("Gallia", Terrain::Terre, None, vec![(BatimentsTypes::Caravane(RessourceType::Cereales), false),
+                                                                                                                            (BatimentsTypes::Caravane(RessourceType::Mouton), false),
+                                                                                                                            (BatimentsTypes::Marche, false)], 
+                                                                                                        vec![TerritoireEnum::Germania, TerritoireEnum::Dalmatia,
+                                                                                                                            TerritoireEnum::Latium, TerritoireEnum::MareTyrrhenum],
+                                                                                                        Vec::new())},
+
+                TerritoireEnum::Germania => Territoire::new("Germania", Terrain::Terre, None, vec![(BatimentsTypes::Caravane(RessourceType::Diamant), false),
+                                                                                                                                (BatimentsTypes::Marche, false)], 
+                                                                                                            vec![TerritoireEnum::Gallia, TerritoireEnum::Dalmatia,
+                                                                                                                            TerritoireEnum::Dacia],
+                                                                                                            Vec::new()),
+                                                                                                            
+                TerritoireEnum::Dalmatia => Territoire::new("Dalmatia", Terrain::Terre, None, vec![(BatimentsTypes::Caravane(RessourceType::Bois), false),
+                                                                                                                                (BatimentsTypes::Caravane(RessourceType::Gladiateur), false),
+                                                                                                                                (BatimentsTypes::Marche, false)], 
+                                                                                                            vec![TerritoireEnum::MareHadriaticum, TerritoireEnum::Macedonia,
+                                                                                                                            TerritoireEnum::Dacia, TerritoireEnum::Gallia, TerritoireEnum::Germania],
+                                                                                                            Vec::new()),
+
+                TerritoireEnum::Latium => Territoire::new("Latium", Terrain::Terre, None, vec![(BatimentsTypes::Caravane(RessourceType::Bois), false),
+                                                                                                                            (BatimentsTypes::Caravane(RessourceType::Gladiateur), false),
+                                                                                                                            (BatimentsTypes::Marche, false)], 
+                                                                                                            vec![TerritoireEnum::MareHadriaticum, TerritoireEnum::Macedonia,
+                                                                                                                        TerritoireEnum::Dacia, TerritoireEnum::Gallia, TerritoireEnum::Germania],
+                                                                                                            Vec::new()),
+                                                                                                            
                 TerritoireEnum::Italia => Territoire::new("Italia", Terrain::Terre, None),
                 TerritoireEnum::MareHadriaticum => Territoire::new("Mare Hadriaticum", Terrain::Mer, None),
                 TerritoireEnum::Macedonia => Territoire::new("Macedonia", Terrain::Terre, None),
