@@ -7,9 +7,9 @@ pub mod batiments {
     pub enum BatimentsTypes {
         Caravane(RessourceType),
         Marche,
-        Cite(RessourceType),
-        Capitale(RessourceType),
-        CiteLegendaire(RessourceType),
+        Cite,
+        Capitale,
+        CiteLegendaire,
         Temple,
         Forteresse,
     }
