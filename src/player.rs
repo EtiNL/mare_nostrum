@@ -2,6 +2,7 @@ use crate::ressources::ressources_mod::RessourceType;
 use crate::heroes_and_wonders::heroes_and_wonders_mod::{HeroesAndWondersEnum, Ability};
 use crate::plateau::plateau::TerritoireEnum;
 use std::collections::HashMap;
+use std::sync::Arc;
 
 #[derive(Debug, Clone)]
 pub struct Player {
@@ -13,10 +14,10 @@ pub struct Player {
 }
 
 impl Player {
-    fn new_game() -> Vec<Player> {
+    fn new_game() -> (Vec<Arc<Player>>, HashMap<PlayerEnum, Arc<Player>>) {
         let mut players = Vec::new();
 
-        let mut roman_player = Player {
+        let mut roman_player = Arc::new(Player {
                                                 name: "Empire Romain".to_string(),
                                                 heroes_and_wonders: vec![HeroesAndWondersEnum::Cesar],
                                                 ressources: vec![(RessourceType::Cereales,1), (RessourceType::Mouton,1),
@@ -24,9 +25,9 @@ impl Player {
                                                                 (RessourceType::Huile,1)],
                                                 territoires: vec![TerritoireEnum::Latium, TerritoireEnum::Gallia, TerritoireEnum::Italia],
                                                 abilities: HeroesAndWondersEnum::Cesar.get_ability(),
-                                            };
+                                            });
 
-        let mut carthaginois_player = Player {
+        let mut carthaginois_player = Arc::new(Player {
                                                     name: "Empire Carthaginois".to_string(),
                                                     heroes_and_wonders: vec![HeroesAndWondersEnum::Hannibal],
                                                     ressources: vec![(RessourceType::Impot,1), (RessourceType::Or,1),
@@ -34,9 +35,9 @@ impl Player {
                                                                     (RessourceType::Parfum,1), (RessourceType::Huile,1)],
                                                     territoires: vec![TerritoireEnum::Numidia, TerritoireEnum::Africa, TerritoireEnum::Libya],
                                                     abilities: HeroesAndWondersEnum::Hannibal.get_ability(),
-                                                    };
+                                                    });
 
-        let mut greek_player = Player {
+        let mut greek_player = Arc::new(Player {
                                                 name: "Empire Grec".to_string(),
                                                 heroes_and_wonders: vec![HeroesAndWondersEnum::Pericles],
                                                 ressources: vec![(RessourceType::Huile,1), (RessourceType::Impot,2),
@@ -44,23 +45,36 @@ impl Player {
                                                                 (RessourceType::Marbre,1)],
                                                 territoires: vec![TerritoireEnum::Thracia, TerritoireEnum::Macedonia, TerritoireEnum::Achea],
                                                 abilities: HeroesAndWondersEnum::Pericles.get_ability(),
-                                            };
+                                            });
 
-        let mut egypsian_player = Player {
+        let mut egypsian_player = Arc::new(Player {
                                                     name: "Empire Egyptien".to_string(),
                                                     heroes_and_wonders: vec![HeroesAndWondersEnum::Cleopatre],
                                                     ressources: vec![(RessourceType::Impot,5), (RessourceType::Papyrus,2),
                                                                     (RessourceType::Cereales,1), (RessourceType::Or,1)],
                                                     territoires: vec![TerritoireEnum::Cyrenaica, TerritoireEnum::Aegyptus, TerritoireEnum::Aethiopia],
                                                     abilities: HeroesAndWondersEnum::Cleopatre.get_ability(),
-                                                };
+                                                });
 
-        players.push(roman_player);
-        players.push(carthaginois_player);
-        players.push(greek_player);
-        players.push(egypsian_player);
+        players.push(roman_player.clone());
+        players.push(carthaginois_player.clone());
+        players.push(greek_player.clone());
+        players.push(egypsian_player.clone());
+
+        let mut players_map: HashMap<PlayerEnum, Arc<Player>> = HashMap::new();
+    
+        for player in &players {
+            let player_enum = match player.name.as_str() {
+                "Empire Romain" => PlayerEnum::Roman,
+                "Empire Carthaginois" => PlayerEnum::Carthaginois,
+                "Empire Grec" => PlayerEnum::Greek,
+                "Empire Egyptien" => PlayerEnum::Egypsian,
+                _ => continue,
+            };
+            players_map.insert(player_enum, player.clone());
+        }
         
-        players
+        (players, players_map)
     }
 }
 
@@ -73,21 +87,7 @@ pub enum PlayerEnum {
 }
 
 impl PlayerEnum {
-
-    fn get_player_hashmap(players: Vec<Player>) ->  HashMap<PlayerEnum, Player> {
-        let mut player_map: HashMap<PlayerEnum, Player> = HashMap::new();
-    
-        for player in players {
-            let player_enum = match player.name.as_str() {
-                "Empire Romain" => PlayerEnum::Roman,
-                "Empire Carthaginois" => PlayerEnum::Carthaginois,
-                "Empire Grec" => PlayerEnum::Greek,
-                "Empire Egyptien" => PlayerEnum::Egypsian,
-                _ => continue,
-            };
-            player_map.insert(player_enum, player);
-        }
-
-        player_map
+    pub fn get_player(hashmap: &HashMap<PlayerEnum, Arc<Player>>, player_enum: &PlayerEnum) -> Option<Arc<Player>> {
+        hashmap.get(player_enum).cloned()
     }
 }

@@ -118,45 +118,6 @@ pub mod plateau {
             .cloned()
         }
 
-        pub fn to_string(&self) -> String {
-            match self {
-                TerritoireEnum::Gallia => "Gallia",
-                TerritoireEnum::Germania => "Germania",
-                TerritoireEnum::Dalmatia => "Dalmatia",
-                TerritoireEnum::Latium => "Latium",
-                TerritoireEnum::Italia => "Italia",
-                TerritoireEnum::MareHadriaticum => "Mare Hadriaticum",
-                TerritoireEnum::Macedonia => "Macedonia",
-                TerritoireEnum::Dacia => "Dacia",
-                TerritoireEnum::Thracia => "Thracia",
-                TerritoireEnum::Achea => "Achea",
-                TerritoireEnum::MareIonium => "Mare Ionium",
-                TerritoireEnum::MareAegaeum => "Mare Aegaeum",
-                TerritoireEnum::MareTyrrhenum => "Mare Tyrrhenum",
-                TerritoireEnum::MareSardum => "Mare Sardum",
-                TerritoireEnum::MareAfricum => "Mare Africum",
-                TerritoireEnum::Sicilia => "Sicilia",
-                TerritoireEnum::Numidia => "Numidia",
-                TerritoireEnum::Africa => "Africa",
-                TerritoireEnum::Phasania => "Phasania",
-                TerritoireEnum::Libya => "Libya",
-                TerritoireEnum::Garamantia => "Garamantia",
-                TerritoireEnum::Cyrenaica => "Cyrenaica",
-                TerritoireEnum::Nubia => "Nubia",
-                TerritoireEnum::Aegyptus => "Aegyptus",
-                TerritoireEnum::Aethiopia => "Aethiopia",
-                TerritoireEnum::MareAegyptum => "Mare Aegyptum",
-                TerritoireEnum::Creta => "Creta",
-                TerritoireEnum::Judea => "Judea",
-                TerritoireEnum::Cilicia => "Cilicia",
-                TerritoireEnum::MareGyprium => "Mare Gyprium",
-                TerritoireEnum::Cappadocia => "Cappadocia",
-                TerritoireEnum::PontusEuxinus => "Pontus Euxinus",
-                TerritoireEnum::Asia => "Asia",
-            }
-            .to_string()
-        }
-
         pub fn create(&self) -> Territoire {
             match self {
                 TerritoireEnum::Gallia => {Territoire::new("Gallia", Terrain::Terre, None, vec![(BatimentsTypes::Caravane(RessourceType::Cereales), false),
@@ -397,22 +358,22 @@ pub mod plateau {
         }
     }
 
-    pub fn map_construction() ->  (HashMap<String, Arc<Territoire>>,Vec<Arc<Territoire>>) {
+    pub fn map_construction() ->  (HashMap<TerritoireEnum, Arc<Territoire>>,Vec<Arc<Territoire>>) {
         let mut map = Vec::new();
         let mut hashmap = HashMap::new();
         
         for territoire in TerritoireEnum::iterator() {
             let created_territoire = Arc::new(territoire.create());
             map.push(Arc::clone(&created_territoire));
-            hashmap.insert(territoire.to_string(), created_territoire);
+            hashmap.insert(territoire, created_territoire);
         }
 
         (hashmap, map)
     }
 
     // Function to get a reference to the corresponding `Territoire` from the map
-    pub fn get_territoire(hashmap: &HashMap<String, Arc<Territoire>>, territoire_enum: &TerritoireEnum) -> Option<Arc<Territoire>> {
-        hashmap.get(&territoire_enum.to_string()).cloned()
+    pub fn get_territoire(hashmap: &HashMap<TerritoireEnum, Arc<Territoire>>, territoire_enum: &TerritoireEnum) -> Option<Arc<Territoire>> {
+        hashmap.get(&territoire_enum).cloned()
     }
 
     // Example usage
