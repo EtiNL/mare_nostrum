@@ -6,13 +6,10 @@ mod materiel_militaire;
 mod heroes_and_wonders;
 mod game_phases;
 mod monopole_counter;
+mod game_state;
 
-use crate::plateau::plateau::{map_construction, test_get_territoire};
+use crate::game_state::game_state::new_game;
 fn main() {
-    // let mut map = map_construction();
-    // for territoire_ref in &map {
-    //     let name = (territoire_ref.name).clone();
-    //     println!("{name}");
-    // }
-    test_get_territoire();
+    let mut game_state = new_game();
+    game_state.print_attributes();
 }

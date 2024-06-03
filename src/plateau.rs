@@ -1,12 +1,13 @@
 use crate::batiments::batiments::BatimentsTypes;
 use crate::ressources::ressources_mod::RessourceType;
 use crate::materiel_militaire::materiel_militaire::MaterielMilitaire;
-use crate::player::Player;
 use std::collections::HashMap;
-use std::sync::Arc;
+use std::sync::{Arc, Mutex};
 
 pub mod plateau {
-    use super::{BatimentsTypes, MaterielMilitaire, Player, HashMap, Arc, RessourceType};
+    use crate::player::PlayerEnum;
+
+    use super::{BatimentsTypes, MaterielMilitaire, HashMap, Arc, RessourceType, Mutex};
 
     #[derive(Debug, Clone)]
     pub enum Terrain {
@@ -18,17 +19,17 @@ pub mod plateau {
     pub struct Territoire {
         pub name: String,
         pub type_terrain: Terrain,
-        pub proprietaire: Option<&'static Player>,
+        pub proprietaire: Option<PlayerEnum>,
         pub constructions: Vec<(BatimentsTypes, bool)>,
         pub neighbours: Vec<TerritoireEnum>,
-        pub militaire: Vec<(&'static Player, MaterielMilitaire)>,
+        pub militaire: Vec<(PlayerEnum, MaterielMilitaire)>,
     }
 
     impl Territoire {
-        pub fn new(name: &str, terrain: Terrain, player: Option<&'static Player>, 
+        pub fn new(name: &str, terrain: Terrain, player: Option<PlayerEnum>, 
                     _constructions: Vec<(BatimentsTypes, bool)>,
                     _neighbours: Vec<TerritoireEnum>, 
-                    _militaire: Vec<(&'static Player, MaterielMilitaire)>) -> Territoire {
+                    _militaire: Vec<(PlayerEnum, MaterielMilitaire)>) -> Territoire {
             Territoire {
                 name: name.to_string(),
                 type_terrain: terrain,
@@ -358,12 +359,15 @@ pub mod plateau {
         }
     }
 
-    pub fn map_construction() ->  (HashMap<TerritoireEnum, Arc<Territoire>>,Vec<Arc<Territoire>>) {
+    pub fn map_construction() -> (
+        HashMap<TerritoireEnum, Arc<Mutex<Territoire>>>,
+        Vec<Arc<Mutex<Territoire>>>,
+    ) {
         let mut map = Vec::new();
         let mut hashmap = HashMap::new();
-        
+
         for territoire in TerritoireEnum::iterator() {
-            let created_territoire = Arc::new(territoire.create());
+            let created_territoire = Arc::new(Mutex::new(territoire.create()));
             map.push(Arc::clone(&created_territoire));
             hashmap.insert(territoire, created_territoire);
         }
@@ -372,8 +376,9 @@ pub mod plateau {
     }
 
     // Function to get a reference to the corresponding `Territoire` from the map
-    pub fn get_territoire(hashmap: &HashMap<TerritoireEnum, Arc<Territoire>>, territoire_enum: &TerritoireEnum) -> Option<Arc<Territoire>> {
-        hashmap.get(&territoire_enum).cloned()
+
+    pub fn get_territoire(hashmap: &HashMap<TerritoireEnum, Arc<Mutex<Territoire>>>, territoire_enum: &TerritoireEnum) -> Option<Arc<Mutex<Territoire>>> {
+        hashmap.get(territoire_enum).cloned()
     }
 
     // Example usage
