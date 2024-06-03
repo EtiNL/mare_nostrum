@@ -34,23 +34,6 @@ pub mod heroes_and_wonders_mod {
     }
 
     #[derive(Debug, Clone)]
-    pub struct HeroAndWonder {
-        pub name: String,
-        pub abilities: Vec<Ability>,
-        pub starting_hero: bool,
-    }
-
-    impl HeroAndWonder {
-        pub fn new(name: &str, hw_abilities: Vec<Ability>, starter: bool) -> HeroAndWonder {
-            HeroAndWonder {
-                name: name.to_string(),
-                abilities: hw_abilities,
-                starting_hero: starter,
-            }
-        }
-    }
-
-    #[derive(Debug, Clone)]
     pub enum HeroesAndWondersEnum {
         Cesar,
         Cleopatre,
@@ -77,135 +60,67 @@ pub mod heroes_and_wonders_mod {
     }
 
     impl HeroesAndWondersEnum {
-        pub fn get_hero_and_wonder(&self) -> HeroAndWonder {
+        pub fn get_ability(&self) -> Vec<Ability> {
             match self {
-                HeroesAndWondersEnum::Cesar => HeroAndWonder::new(
-                    "Cesar",
-                    vec![Ability::AttackDice(GamePhases::Militaire, Terrain::Terre, 1)],
-                    true,
-                ),
-                HeroesAndWondersEnum::Cleopatre => HeroAndWonder::new(
-                    "Cleopatre",
-                    vec![Ability::IncludeTaxTokenInGoodCombination(GamePhases::Achats), Ability::IncludeGoodTokenInTaxCombination(GamePhases::Achats)],
-                    true,
-                ),
-                HeroesAndWondersEnum::Hammourabi => HeroAndWonder::new(
-                    "Hammourabi",
-                    vec![Ability::FreeInfluenceMarker(GamePhases::Achats)],
-                    true,
-                ),
-                HeroesAndWondersEnum::Hannibal => HeroAndWonder::new(
-                    "Hannibal",
-                    vec![Ability::SameGoodTokenInGoodCombination(GamePhases::Achats)],
-                    true,
-                ),
-                HeroesAndWondersEnum::Pericles => HeroAndWonder::new(
-                    "Pericles",
-                    vec![Ability::DefenceDice(GamePhases::Militaire, Terrain::Terre, 2)],
-                    true,
-                ),
-                HeroesAndWondersEnum::Antigone => HeroAndWonder::new(
-                    "Antigone",
-                    vec![Ability::ExengeWithTheNumberOfGoodPlayerWants(GamePhases::Commerce),
-                                    Ability::BonusMonopole(GamePhases::Revendication, Monopole::Commercial, 2),
-                                    Ability::BonusMonopole(GamePhases::Revendication, Monopole::Politique, 2)],
-                    false,
-                ),
-                HeroesAndWondersEnum::CastorEtPolux => HeroAndWonder::new(
-                    "Castor Et Polux",
-                    vec![Ability::CopyAbility],
-                    false,
-                ),
-                HeroesAndWondersEnum::Circe => HeroAndWonder::new(
-                    "Circé",
-                    vec![Ability::UseLegionAsCaravane(GamePhases::Militaire),
-                                    Ability::BonusMonopole(GamePhases::Revendication, Monopole::Commercial, 1),
-                                    Ability::BonusMonopole(GamePhases::Revendication, Monopole::Militaire, 1)],
-                    false,
-                ),
-                HeroesAndWondersEnum::Gilgamesh => HeroAndWonder::new(
-                    "Gilgamesh",
-                    vec![Ability::ContructForteresseForPierreOrImpot(GamePhases::Achats)],
-                    false,
-                ),
-                HeroesAndWondersEnum::Hamilcar => HeroAndWonder::new(
-                    "Hamilcar",
-                    vec![Ability::DoubleBeneficePillage(GamePhases::Militaire),
-                                    Ability::BonusMonopole(GamePhases::Revendication, Monopole::Commercial, 1),
-                                    Ability::BonusMonopole(GamePhases::Revendication, Monopole::Politique, 1),
-                                    Ability::BonusMonopole(GamePhases::Revendication, Monopole::Militaire, 1)],
-                    false,
-                ),
-                HeroesAndWondersEnum::Hercule => HeroAndWonder::new(
-                    "Hercule",
-                    vec![Ability::BonusMonopole(GamePhases::Revendication, Monopole::Commercial, 2),
-                                    Ability::BonusMonopole(GamePhases::Revendication, Monopole::Politique, 2),
-                                    Ability::BonusMonopole(GamePhases::Revendication, Monopole::Militaire, 2)],
-                    false,
-                ),
-                HeroesAndWondersEnum::Nabuchodonosor => HeroAndWonder::new(
-                    "Nabuchodonosor",
-                    vec![Ability::Plus5InBattleIfOwnTerritory(GamePhases::Militaire)],
-                    false,
-                ),
-                HeroesAndWondersEnum::Pentesilee => HeroAndWonder::new(
-                    "Pentesilée",
-                    vec![Ability::FreeLegionInOccupiedTerritory(GamePhases::Achats),
-                                    Ability::BonusMonopole(GamePhases::Revendication, Monopole::Politique, 2),
-                                    Ability::BonusMonopole(GamePhases::Revendication, Monopole::Militaire, 2)],
-                    false,
-                ),
-                HeroesAndWondersEnum::Persee => HeroAndWonder::new(
-                    "Persée",
-                    vec![Ability::PlayFirstForTheWin(GamePhases::Achats),
-                                    Ability::BonusMonopole(GamePhases::Revendication, Monopole::Commercial, 1),
-                                    Ability::BonusMonopole(GamePhases::Revendication, Monopole::Politique, 2),
-                                    Ability::BonusMonopole(GamePhases::Revendication, Monopole::Militaire, 1)],
-                    false,
-                ),
-                HeroesAndWondersEnum::RamsesII => HeroAndWonder::new(
-                    "Ramses II",
-                    vec![Ability::OneMoreDice(GamePhases::Militaire)],
-                    false,
-                ),
-                HeroesAndWondersEnum::ReineDeSaba => HeroAndWonder::new(
-                    "Reine de Saba",
-                    vec![Ability::AutomaticallyConvertTerritoryIfLeggionOnInfluenceMarker(GamePhases::Militaire),
-                                    Ability::BonusMonopole(GamePhases::Revendication, Monopole::Politique, 1),
-                                    Ability::BonusMonopole(GamePhases::Revendication, Monopole::Militaire, 1)],
-                    false,
-                ),
-                HeroesAndWondersEnum::Spartacus => HeroAndWonder::new(
-                    "Spartacus",
-                    vec![Ability::LegionForGladiatorOrOneTax(GamePhases::Achats)],
-                    false,
-                ),
-                HeroesAndWondersEnum::Colosse => HeroAndWonder::new(
-                    "Colosse",
-                    vec![Ability::TakeOneGoodThatPlayerWantsAfterRessourceCollection(GamePhases::Production)],
-                    false,
-                ),
-                HeroesAndWondersEnum::TempleArtemis => HeroAndWonder::new(
-                    "Temple d'Artémis",
-                    vec![Ability::OneTaxFree(GamePhases::Production)],
-                    false,
-                ),
-                HeroesAndWondersEnum::Phare => HeroAndWonder::new(
-                    "Phare",
-                    vec![Ability::BuildOneBoatForOneWoodOrOneTax(GamePhases::Achats)],
-                    false,
-                ),
-                HeroesAndWondersEnum::JardinSuspendus => HeroAndWonder::new(
-                    "Jardin Suspendus",
-                    vec![Ability::KeepTwoDifferentGood(GamePhases::Achats),
-                    Ability::BonusMonopole(GamePhases::Revendication, Monopole::Commercial, 2)],
-                    false,
-                ),
-                HeroesAndWondersEnum::StatueDeZeus => HeroAndWonder::new(
-                    "Statue de Zeus",
-                    vec![Ability::ChoosePeaceWithAnotherPlayer(GamePhases::Militaire)],
-                    false,
-                ),
+                HeroesAndWondersEnum::Cesar => vec![Ability::AttackDice(GamePhases::Militaire, Terrain::Terre, 1)],
+
+                HeroesAndWondersEnum::Cleopatre => vec![Ability::IncludeTaxTokenInGoodCombination(GamePhases::Achats), Ability::IncludeGoodTokenInTaxCombination(GamePhases::Achats)],
+
+                HeroesAndWondersEnum::Hammourabi => vec![Ability::FreeInfluenceMarker(GamePhases::Achats)],
+
+                HeroesAndWondersEnum::Hannibal => vec![Ability::SameGoodTokenInGoodCombination(GamePhases::Achats)],
+
+                HeroesAndWondersEnum::Pericles => vec![Ability::DefenceDice(GamePhases::Militaire, Terrain::Terre, 2)],
+
+                HeroesAndWondersEnum::Antigone => vec![Ability::ExengeWithTheNumberOfGoodPlayerWants(GamePhases::Commerce),
+                                                        Ability::BonusMonopole(GamePhases::Revendication, Monopole::Commercial, 2),
+                                                        Ability::BonusMonopole(GamePhases::Revendication, Monopole::Politique, 2)],
+
+                HeroesAndWondersEnum::CastorEtPolux => vec![Ability::CopyAbility],
+
+                HeroesAndWondersEnum::Circe => vec![Ability::UseLegionAsCaravane(GamePhases::Militaire),
+                                                    Ability::BonusMonopole(GamePhases::Revendication, Monopole::Commercial, 1),
+                                                    Ability::BonusMonopole(GamePhases::Revendication, Monopole::Militaire, 1)],
+
+                HeroesAndWondersEnum::Gilgamesh => vec![Ability::ContructForteresseForPierreOrImpot(GamePhases::Achats)],
+
+                HeroesAndWondersEnum::Hamilcar => vec![Ability::DoubleBeneficePillage(GamePhases::Militaire),
+                                                    Ability::BonusMonopole(GamePhases::Revendication, Monopole::Commercial, 1),
+                                                    Ability::BonusMonopole(GamePhases::Revendication, Monopole::Politique, 1),
+                                                    Ability::BonusMonopole(GamePhases::Revendication, Monopole::Militaire, 1)],
+                HeroesAndWondersEnum::Hercule => vec![Ability::BonusMonopole(GamePhases::Revendication, Monopole::Commercial, 2),
+                                                    Ability::BonusMonopole(GamePhases::Revendication, Monopole::Politique, 2),
+                                                    Ability::BonusMonopole(GamePhases::Revendication, Monopole::Militaire, 2)],
+
+                HeroesAndWondersEnum::Nabuchodonosor => vec![Ability::Plus5InBattleIfOwnTerritory(GamePhases::Militaire)],
+
+                HeroesAndWondersEnum::Pentesilee => vec![Ability::FreeLegionInOccupiedTerritory(GamePhases::Achats),
+                                                        Ability::BonusMonopole(GamePhases::Revendication, Monopole::Politique, 2),
+                                                        Ability::BonusMonopole(GamePhases::Revendication, Monopole::Militaire, 2)],
+
+                HeroesAndWondersEnum::Persee => vec![Ability::PlayFirstForTheWin(GamePhases::Achats),
+                                                    Ability::BonusMonopole(GamePhases::Revendication, Monopole::Commercial, 1),
+                                                    Ability::BonusMonopole(GamePhases::Revendication, Monopole::Politique, 2),
+                                                    Ability::BonusMonopole(GamePhases::Revendication, Monopole::Militaire, 1)],
+
+                HeroesAndWondersEnum::RamsesII => vec![Ability::OneMoreDice(GamePhases::Militaire)],
+
+                HeroesAndWondersEnum::ReineDeSaba => vec![Ability::AutomaticallyConvertTerritoryIfLeggionOnInfluenceMarker(GamePhases::Militaire),
+                                                        Ability::BonusMonopole(GamePhases::Revendication, Monopole::Politique, 1),
+                                                        Ability::BonusMonopole(GamePhases::Revendication, Monopole::Militaire, 1)],
+
+                HeroesAndWondersEnum::Spartacus => vec![Ability::LegionForGladiatorOrOneTax(GamePhases::Achats)],
+
+                HeroesAndWondersEnum::Colosse => vec![Ability::TakeOneGoodThatPlayerWantsAfterRessourceCollection(GamePhases::Production)],
+
+                HeroesAndWondersEnum::TempleArtemis => vec![Ability::OneTaxFree(GamePhases::Production)],
+
+                HeroesAndWondersEnum::Phare => vec![Ability::BuildOneBoatForOneWoodOrOneTax(GamePhases::Achats)],
+
+                HeroesAndWondersEnum::JardinSuspendus => vec![Ability::KeepTwoDifferentGood(GamePhases::Achats),
+                                                            Ability::BonusMonopole(GamePhases::Revendication, Monopole::Commercial, 2)],
+
+                HeroesAndWondersEnum::StatueDeZeus => vec![Ability::ChoosePeaceWithAnotherPlayer(GamePhases::Militaire)],
             }
             }
     }
