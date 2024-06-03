@@ -1,6 +1,7 @@
 use crate::ressources::ressources_mod::RessourceType;
-use crate::heroes_and_wonders::heroes_and_wonders_mod::{HeroesAndWondersEnum, Ability, };
-use crate::plateau::plateau::{TerritoireEnum, Terrain};
+use crate::heroes_and_wonders::heroes_and_wonders_mod::{HeroesAndWondersEnum, Ability};
+use crate::plateau::plateau::TerritoireEnum;
+use std::collections::HashMap;
 
 #[derive(Debug, Clone)]
 pub struct Player {
@@ -72,24 +73,21 @@ pub enum PlayerEnum {
 }
 
 impl PlayerEnum {
-    pub fn iterator() -> impl Iterator<Item = PlayerEnum> {
-        [
-            PlayerEnum::Roman,
-            PlayerEnum::Carthaginois,
-            PlayerEnum::Greek,
-            PlayerEnum::Egypsian,
-        ]
-        .iter()
-        .cloned()
-    }
 
-    pub fn to_string(&self) -> String {
-        match self {
-            PlayerEnum::Roman => "Empire Romain",
-            PlayerEnum::Carthaginois => "Empire Carthaginois",
-            PlayerEnum::Greek => "Empire Grec",
-            PlayerEnum::Egypsian => "Empire Egyptien",
+    fn get_player_hashmap(players: Vec<Player>) ->  HashMap<PlayerEnum, Player> {
+        let mut player_map: HashMap<PlayerEnum, Player> = HashMap::new();
+    
+        for player in players {
+            let player_enum = match player.name.as_str() {
+                "Empire Romain" => PlayerEnum::Roman,
+                "Empire Carthaginois" => PlayerEnum::Carthaginois,
+                "Empire Grec" => PlayerEnum::Greek,
+                "Empire Egyptien" => PlayerEnum::Egypsian,
+                _ => continue,
+            };
+            player_map.insert(player_enum, player);
         }
-        .to_string()
+
+        player_map
     }
 }
