@@ -1,3 +1,4 @@
+use crate::monopole_counter::monopole_counter::Monopole;
 use crate::ressources::ressources_mod::RessourceType;
 use crate::heroes_and_wonders::heroes_and_wonders_mod::{HeroesAndWondersEnum, Ability};
 use crate::plateau::plateau::TerritoireEnum;
@@ -11,6 +12,7 @@ pub struct Player {
     ressources: Vec<(RessourceType, u8)>,
     territoires: Vec<TerritoireEnum>,
     abilities: Vec<Ability>,
+    monopoles: (Monopole, Monopole, Monopole),
 }
 
 impl Player {
@@ -25,6 +27,7 @@ impl Player {
                                                                 (RessourceType::Huile,1)],
                                                 territoires: vec![TerritoireEnum::Latium, TerritoireEnum::Gallia, TerritoireEnum::Italia],
                                                 abilities: HeroesAndWondersEnum::Cesar.get_ability(),
+                                                monopoles: (Monopole::Commercial(7), Monopole::Politique(1), Monopole::Militaire(3))
                                             });
 
         let mut carthaginois_player = Arc::new(Player {
@@ -35,6 +38,7 @@ impl Player {
                                                                     (RessourceType::Parfum,1), (RessourceType::Huile,1)],
                                                     territoires: vec![TerritoireEnum::Numidia, TerritoireEnum::Africa, TerritoireEnum::Libya],
                                                     abilities: HeroesAndWondersEnum::Hannibal.get_ability(),
+                                                    monopoles: (Monopole::Commercial(7), Monopole::Politique(1), Monopole::Militaire(2))
                                                     });
 
         let mut greek_player = Arc::new(Player {
@@ -45,6 +49,7 @@ impl Player {
                                                                 (RessourceType::Marbre,1)],
                                                 territoires: vec![TerritoireEnum::Thracia, TerritoireEnum::Macedonia, TerritoireEnum::Achea],
                                                 abilities: HeroesAndWondersEnum::Pericles.get_ability(),
+                                                monopoles: (Monopole::Commercial(4), Monopole::Politique(4), Monopole::Militaire(3))
                                             });
 
         let mut egypsian_player = Arc::new(Player {
@@ -54,6 +59,7 @@ impl Player {
                                                                     (RessourceType::Cereales,1), (RessourceType::Or,1)],
                                                     territoires: vec![TerritoireEnum::Cyrenaica, TerritoireEnum::Aegyptus, TerritoireEnum::Aethiopia],
                                                     abilities: HeroesAndWondersEnum::Cleopatre.get_ability(),
+                                                    monopoles: (Monopole::Commercial(4), Monopole::Politique(4), Monopole::Militaire(2))
                                                 });
 
         players.push(roman_player.clone());
