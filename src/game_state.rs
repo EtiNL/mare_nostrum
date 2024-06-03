@@ -93,7 +93,23 @@ pub mod game_state {
                 }
             }
         }
-    }
+
+        pub fn update_ressources(&mut self) {
+            // Assign ressources based on player territories
+            for player_enum in PlayerEnum::iterator() {
+                let player_lock = PlayerEnum::get_player(&self.players_hashmap, &player_enum).unwrap();
+                let territoires = player_lock.lock().unwrap().territoires.clone();
+                for territoire_enum in territoires {
+                    let territoire_lock = get_territoire(&self.hashmap, &territoire_enum).unwrap();
+                    let proprietaire = territoire_lock.lock().unwrap().proprietaire.clone();
+                    if proprietaire == Some(player_enum) {
+                        player_lock.lock().unwrap().ressource_add(territoire_lock.lock().unwrap().constructions)
+                    }
+
+                    };
+                }
+            }
+        }
 
     pub fn new_game() -> GameState {
         let (mut _players, _players_map) = new_players();

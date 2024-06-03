@@ -1,7 +1,7 @@
-use crate::ressources::ressources_mod::RessourceType;
+use crate::ressources::ressources_mod::{RessourceType, RessourceLegendaire};
 
 pub mod batiments {
-    use super::RessourceType;
+    use super::{RessourceType, RessourceLegendaire};
 
     #[derive(Debug, Clone)]
     pub enum BatimentsTypes {
@@ -13,5 +13,4 @@ pub mod batiments {
         Temple,
         Forteresse,
     }
-
 }

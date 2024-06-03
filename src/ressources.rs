@@ -1,3 +1,4 @@
+
 pub mod ressources_mod  {
 
     #[derive(Debug, Clone)]
@@ -35,4 +36,5 @@ pub mod ressources_mod  {
         Vin,
         Gladiateur,
     }
+
 }
