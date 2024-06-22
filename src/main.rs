@@ -11,5 +11,6 @@ mod game_state;
 use crate::game_state::game_state::new_game;
 fn main() {
     let mut game_state = new_game();
+    game_state.update_ressources();
     game_state.print_attributes();
 }

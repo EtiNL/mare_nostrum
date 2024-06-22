@@ -16,11 +16,32 @@ pub mod plateau {
     }
 
     #[derive(Debug, Clone)]
+    pub struct Constructions(Vec<(BatimentsTypes, bool)>);
+
+    impl IntoIterator for Constructions {
+        type Item = (BatimentsTypes, bool);
+        type IntoIter = std::vec::IntoIter<Self::Item>;
+
+        fn into_iter(self) -> Self::IntoIter {
+            self.0.into_iter()
+        }
+    }
+
+    impl<'a> IntoIterator for &'a Constructions {
+        type Item = &'a (BatimentsTypes, bool);
+        type IntoIter = std::slice::Iter<'a, (BatimentsTypes, bool)>;
+
+        fn into_iter(self) -> Self::IntoIter {
+            self.0.iter()
+        }
+    }
+
+    #[derive(Debug, Clone)]
     pub struct Territoire {
         pub name: String,
         pub type_terrain: Terrain,
         pub proprietaire: Option<PlayerEnum>,
-        pub constructions: Vec<(BatimentsTypes, bool)>,
+        pub constructions: Constructions,
         pub neighbours: Vec<TerritoireEnum>,
         pub militaire: Vec<(PlayerEnum, MaterielMilitaire)>,
     }
@@ -34,7 +55,7 @@ pub mod plateau {
                 name: name.to_string(),
                 type_terrain: terrain,
                 proprietaire: player,
-                constructions: _constructions,
+                constructions: Constructions(_constructions),
                 neighbours: _neighbours,
                 militaire: _militaire,
             }

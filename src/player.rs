@@ -1,7 +1,7 @@
 use crate::monopole_counter::monopole_counter::Monopole;
-use crate::ressources::ressources_mod::RessourceType;
+use crate::ressources::ressources_mod::{RessourceType, RessourceLegendaire};
 use crate::heroes_and_wonders::heroes_and_wonders_mod::{HeroesAndWondersEnum, Ability};
-use crate::plateau::plateau::TerritoireEnum;
+use crate::plateau::plateau::{Constructions, TerritoireEnum};
 use crate::batiments::batiments::BatimentsTypes;
 use std::collections::HashMap;
 use std::sync::{Arc, Mutex};
@@ -17,48 +17,42 @@ pub struct Player {
 }
 
 impl Player {
-    pub fn ressource_production(&mut self) {
+    pub fn ressource_production(&mut self, producteurs: &Constructions) -> Vec<(RessourceType, u8)> {
         let mut double_good = false;
         let mut double_tax = false;
-
-        for territoire_enum in TerritoireEnum::iterator(){
-            
-            let producteur 
-
-            // First pass to identify the effects
-            for (batiment, actif) in &producteurs {
-                if !actif {
-                    continue;
-                }
-                match batiment {
-                    BatimentsTypes::Marche => double_good = true,
-                    BatimentsTypes::Temple => double_tax = true,
-                    _ => continue,
-                }
+    
+        // First pass to identify the effects
+        for (batiment, actif) in producteurs {
+            if !actif {
+                continue;
             }
-
-            let mut ressources = Vec::new();
-
-            // Second pass to generate resources
-            for (batiment, actif) in producteurs {
-                if !actif {
-                    continue;
-                }
-                let generated = match batiment {
-                    BatimentsTypes::Caravane(ressource) => Some((ressource, if double_good { 2 } else { 1 })),
-                    BatimentsTypes::Cite => Some((RessourceType::Impot, if double_tax { 2 } else { 1 })),
-                    BatimentsTypes::Capitale => Some((RessourceType::Impot, if double_tax { 2 } else { 1 })),
-                    BatimentsTypes::CiteLegendaire => Some((RessourceType::Legendaire(RessourceLegendaire::Marbre), 1)),
-                    _ => None,
-                };
-                if let Some(resource) = generated {
-                    ressources.push(resource);
-                }
+            match batiment {
+                BatimentsTypes::Marche => double_good = true,
+                BatimentsTypes::Temple => double_tax = true,
+                _ => continue,
             }
-
-            ressources}
-        
-        
+        }
+    
+        let mut ressources = Vec::new();
+    
+        // Second pass to generate resources
+        for (batiment, actif) in producteurs {
+            if !actif {
+                continue;
+            }
+            let generated = match batiment {
+                BatimentsTypes::Caravane(ressource) => Some((ressource.clone(), if double_good { 2 } else { 1 })),
+                BatimentsTypes::Cite => Some((RessourceType::Impot, if double_tax { 2 } else { 1 })),
+                BatimentsTypes::Capitale => Some((RessourceType::Impot, if double_tax { 2 } else { 1 })),
+                BatimentsTypes::CiteLegendaire => Some((RessourceType::Legendaire(RessourceLegendaire::Marbre), 1)),
+                _ => None,
+            };
+            if let Some(resource) = generated {
+                ressources.push(resource);
+            }
+        }
+    
+        ressources
     }
 }
 

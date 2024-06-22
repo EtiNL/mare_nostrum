@@ -94,21 +94,25 @@ pub mod game_state {
             }
         }
 
+        /// Updates the resources of each player based on their territories.
         pub fn update_ressources(&mut self) {
-            // Assign ressources based on player territories
             for player_enum in PlayerEnum::iterator() {
-                let player_lock = PlayerEnum::get_player(&self.players_hashmap, &player_enum).unwrap();
-                let territoires = player_lock.lock().unwrap().territoires.clone();
-                for territoire_enum in territoires {
-                    let territoire_lock = get_territoire(&self.hashmap, &territoire_enum).unwrap();
-                    let proprietaire = territoire_lock.lock().unwrap().proprietaire.clone();
-                    if proprietaire == Some(player_enum) {
-                        player_lock.lock().unwrap().ressource_add(territoire_lock.lock().unwrap().constructions)
+                if let Some(player_lock) = PlayerEnum::get_player(&self.players_hashmap, &player_enum) {
+                    let mut player = player_lock.lock().unwrap();
+                    let territoires = player.territoires.clone();
+                    let mut ressources = Vec::new();
+                    for territoire_enum in territoires {
+                        if let Some(territoire_lock) = get_territoire(&self.hashmap, &territoire_enum) {
+                            let territoire = territoire_lock.lock().unwrap();
+                            if territoire.proprietaire == Some(player_enum.clone()) {
+                                ressources.extend(player.ressource_production(&territoire.constructions));
+                            }
+                        }
                     }
-
-                    };
+                    player.ressources = ressources;
                 }
             }
+        }
         }
 
     pub fn new_game() -> GameState {
